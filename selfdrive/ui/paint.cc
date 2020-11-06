@@ -591,7 +591,7 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+350, "OutScale:%.3f", scene.output_scale);
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "Awareness:%.2f", scene.awareness_status);
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "curvature");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "Curvature");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f", scene.curvature);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " LeftPoly(%%)    LaneWidth    RightPoly(%%)");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                    %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
@@ -1189,7 +1189,7 @@ static void ui_draw_vision_car(UIState *s) {
       s->scene.blindspot_blinkingrate -= 6;
       if(scene->blindspot_blinkingrate<0) s->scene.blindspot_blinkingrate = 120;
       if (scene->blindspot_blinkingrate>=60) {
-        car_img_alpha = 0.6f;
+        car_img_alpha = 0.8f;
       } else {
         car_img_alpha = 0.0f;
       }
