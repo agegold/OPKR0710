@@ -131,7 +131,7 @@ class PathPlanner():
   def update(self, sm, pm, CP, VM):
     limit_steers1 = 0
     limit_steers2 = 0   
-    Debug = 0 
+    debug = 0 
     angle_steers = sm['carState'].steeringAngle
     active = sm['controlsState'].active
     model_sum = sm['controlsState'].modelSum    
@@ -328,7 +328,7 @@ class PathPlanner():
       self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
       
     str1 = '#/{} CVs/{} LS1/{} LS2/{} Ang/{} oDES/{} delta1/{} fDES/{} '.format(   
-              debug_status, model_sum, limit_steers1, limit_steers2, angle_steers, org_angle_steers_des, delta_steer, self.angle_steers_des_mpc)
+              debug, model_sum, limit_steers1, limit_steers2, angle_steers, org_angle_steers_des, delta_steer, self.angle_steers_des_mpc)
       
     #최대 허용 조향각 제어 로직 2.  
     delta_steer2 = self.angle_steers_des_mpc - angle_steers
