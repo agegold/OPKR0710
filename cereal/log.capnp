@@ -559,6 +559,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   alertTextMsg1  @61 :Text;
   alertTextMsg2  @62 :Text;
   lateralControlMethod  @63 :UInt8;
+  modelSum  @64 :Float32;  
 
   lateralControlState :union {
     indiState @52 :LateralINDIState;
