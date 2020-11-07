@@ -54,6 +54,9 @@ def calc_states_after_delay(states, v_ego, steer_angle, curvature_factor, steer_
 
 class PathPlanner():
   def __init__(self, CP):
+
+    self.trRapidCurv = trace1.Loger("0710_RapidCurvControl")   
+
     self.LP = LanePlanner()
 
     self.last_cloudlog_t = 0
@@ -298,7 +301,7 @@ class PathPlanner():
             self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers )
     elif v_ego_kph < 15:  # 30
     # 저속 와리가리 제어.  
-      xp = [5,10,15]
+      xp = [3,10,15]
       fp2 = [3,5,7]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
@@ -313,6 +316,9 @@ class PathPlanner():
       limit_steers2 = interp( model_sum, xp, fp2 )  # -
       self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
       
+    # str1 = '#/{} CVs/{} LS1/{} LS2/{} Ang/{} oDES/{} delta1/{} fDES/{} '.format(   
+    #           debug_status, model_sum, limit_steers1, limit_steers2, angle_steers, org_angle_steers_des, delta_steer, self.angle_steers_des_mpc)
+      
     #최대 허용 조향각 제어 로직 2.  
     delta_steer2 = self.angle_steers_des_mpc - angle_steers
     if delta_steer2 > DST_ANGLE_LIMIT:   
@@ -321,6 +327,16 @@ class PathPlanner():
     elif delta_steer2 < -DST_ANGLE_LIMIT:
       m_angle_steers = angle_steers - DST_ANGLE_LIMIT
       self.angle_steers_des_mpc = m_angle_steers
+
+    # str2 = 'delta2/{} fDES2/{}'.format(   
+    #         delta_steer2, self.angle_steers_des_mpc)
+    # self.trRapidCurv.add( str1 + str2 )        
+
+    # 가변 sR rate_cost
+    # self.atom_sr_boost_bp = [ 5.0, 10.0, 15.0, 20.0, 30.0, 50.0, 60.0, 100.0, 300.0]
+    # self.sR_Cost          = [ 1.2, 1.00, 0.75, 0.60, 0.30, 0.18, 0.10,  0.05,  0.01]
+    # #self.sR_Cost          = [1.20, 0.41, 0.34, 0.28, 0.24, 0.18, 0.12, 0.10,  0.05,  0.01]    
+    # self.steer_rate_cost  = interp(abs(angle_steers), self.atom_sr_boost_bp, self.sR_Cost)
 
     #  Check for infeasable MPC solution
     mpc_nans = any(math.isnan(x) for x in self.mpc_solution[0].delta)
