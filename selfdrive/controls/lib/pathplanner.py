@@ -130,7 +130,8 @@ class PathPlanner():
 
   def update(self, sm, pm, CP, VM):
     limit_steers1 = 0
-    limit_steers2 = 0    
+    limit_steers2 = 0   
+    Debug = 0 
     angle_steers = sm['carState'].steeringAngle
     active = sm['controlsState'].active
     model_sum = sm['controlsState'].modelSum    
@@ -279,20 +280,24 @@ class PathPlanner():
     org_angle_steers_des = self.angle_steers_des_mpc
     delta_steer = org_angle_steers_des - angle_steers
     if self.lane_change_state == LaneChangeState.laneChangeStarting:
+      debug = 0
       xp = [40,70]
       fp2 = [3,8]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )      
     elif steeringPressed:
       if angle_steers > 10 and steeringTorque > 0:
+        debug = 1
         delta_steer = max( delta_steer, 0 )
         delta_steer = min( delta_steer, DST_ANGLE_LIMIT )
         self.angle_steers_des_mpc = angle_steers + delta_steer
       elif angle_steers < -10  and steeringTorque < 0:
+        debug = 1
         delta_steer = min( delta_steer, 0 )
         delta_steer = max( delta_steer, -DST_ANGLE_LIMIT )        
         self.angle_steers_des_mpc = angle_steers + delta_steer
       else:
+        debug = 2
         if steeringTorque < 0:  # right
           if delta_steer > 0:
             self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers )
@@ -300,14 +305,17 @@ class PathPlanner():
           if delta_steer < 0:
             self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers )
     elif v_ego_kph < 15:  # 30
+      debug = 3
     # 저속 와리가리 제어.  
       xp = [3,10,15]
       fp2 = [3,5,7]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
-    elif v_ego_kph > 70: 
+    elif v_ego_kph > 70:
+      debug = 4 
       pass
     elif abs(angle_steers) > 50: 
+      debug = 5
     #최대 허용 조향각 제어 로직 1.  
       # xp = [-40,-30,-20,-10,-5,0,5,10,20,30,40]    # 5=>약12도, 10=>28 15=>35, 30=>52
       # fp1 = [ 3, 5, 7, 9,11,13,15,17,15,12,10]    # +
@@ -324,10 +332,12 @@ class PathPlanner():
       
     #최대 허용 조향각 제어 로직 2.  
     delta_steer2 = self.angle_steers_des_mpc - angle_steers
-    if delta_steer2 > DST_ANGLE_LIMIT:   
+    if delta_steer2 > DST_ANGLE_LIMIT:
+      debug = 6   
       p_angle_steers = angle_steers + DST_ANGLE_LIMIT
       self.angle_steers_des_mpc = p_angle_steers
     elif delta_steer2 < -DST_ANGLE_LIMIT:
+      debug = 6
       m_angle_steers = angle_steers - DST_ANGLE_LIMIT
       self.angle_steers_des_mpc = m_angle_steers
 
