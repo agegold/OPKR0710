@@ -139,6 +139,7 @@ class PathPlanner():
     def update(self, sm, pm, CP, VM):
         limit_steers1 = 0
         limit_steers2 = 0
+        delta_steer2 = 0
         debug = 0
         angle_steers = sm['carState'].steeringAngle
         active = sm['controlsState'].active
@@ -320,49 +321,46 @@ class PathPlanner():
                 debug = 2
                 if steeringTorque < 0:  # right
                     if delta_steer > 0:
-                        self.angle_steers_des_mpc = self.limit_ctrl(
-                            org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers)
+                        self.angle_steers_des_mpc = self.limit_ctrl(org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers)
                 elif steeringTorque > 0:  # left
                     if delta_steer < 0:
-                        self.angle_steers_des_mpc = self.limit_ctrl(
-                            org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers)
+                        self.angle_steers_des_mpc = self.limit_ctrl(org_angle_steers_des, DST_ANGLE_LIMIT, angle_steers)
         elif v_ego_kph < 15:  # 30
             debug = 3
         # 저속 와리가리 제어.
             xp = [3, 10, 15]
             fp2 = [3, 5, 7]
             limit_steers = interp(v_ego_kph, xp, fp2)
-            self.angle_steers_des_mpc = self.limit_ctrl(
-                org_angle_steers_des, limit_steers, angle_steers)
+            self.angle_steers_des_mpc = self.limit_ctrl(org_angle_steers_des, limit_steers, angle_steers)
         elif v_ego_kph > 80:
             debug = 4
             pass
         elif abs(angle_steers) > 15:
             debug = 5
         # 최대 허용 조향각 제어 로직 1.
-            xp = [-30,-20,-10,-5, 0, 5,10,20,30]    # 5=>약12도, 10=>28 15=>35, 30=>52
-            fp1 = [ 3,  8, 10,15,20,25,28,22,15]    # +
-            fp2 = [15, 22, 28,25,20,15,10, 8, 3]    # -
-            limit_steers1 = interp( model_sum, xp, fp1 )  # +
-            limit_steers2 = interp( model_sum, xp, fp2 )  # -
-            self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
+            # xp = [-30,-20,-10,-5, 0, 5,10,20,30]    # 5=>약12도, 10=>28 15=>35, 30=>52
+            # fp1 = [ 3,  8, 10,15,20,25,28,22,15]    # +
+            # fp2 = [15, 22, 28,25,20,15,10, 8, 3]    # -
+            # limit_steers1 = interp( model_sum, xp, fp1 )  # +
+            # limit_steers2 = interp( model_sum, xp, fp2 )  # -
+            # self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
 
         str1 = '#/{} CVs/{} LS1/{} LS2/{} Ang/{} oDES/{} delta1/{} fDES/{} '.format(
             debug, model_sum, limit_steers1, limit_steers2, angle_steers, org_angle_steers_des, delta_steer, self.angle_steers_des_mpc)
 
         # # 최대 허용 조향각 제어 로직 2.
-        delta_steer2 = self.angle_steers_des_mpc - angle_steers
-        if delta_steer2 > DST_ANGLE_LIMIT:
-            debug = 6
-            p_angle_steers = angle_steers + DST_ANGLE_LIMIT
-            self.angle_steers_des_mpc = p_angle_steers
-        elif delta_steer2 < -DST_ANGLE_LIMIT:
-            debug = 6
-            m_angle_steers = angle_steers - DST_ANGLE_LIMIT
-            self.angle_steers_des_mpc = m_angle_steers
+        # delta_steer2 = self.angle_steers_des_mpc - angle_steers
+        # if delta_steer2 > DST_ANGLE_LIMIT:
+        #     debug = 6
+        #     p_angle_steers = angle_steers + DST_ANGLE_LIMIT
+        #     self.angle_steers_des_mpc = p_angle_steers
+        # elif delta_steer2 < -DST_ANGLE_LIMIT:
+        #     debug = 6
+        #     m_angle_steers = angle_steers - DST_ANGLE_LIMIT
+        #     self.angle_steers_des_mpc = m_angle_steers
 
-        str2 = 'delta2/{} fDES2/{}'.format(delta_steer2, self.angle_steers_des_mpc)
-        self.trRapidCurv.add(str1 + str2)
+        # str2 = 'delta2/{} fDES2/{}'.format(delta_steer2, self.angle_steers_des_mpc)
+        self.trRapidCurv.add(str1) # + str2)
 
         #  Check for infeasable MPC solution
         mpc_nans = any(math.isnan(x) for x in self.mpc_solution[0].delta)
