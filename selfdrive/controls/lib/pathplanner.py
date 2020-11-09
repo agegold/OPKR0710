@@ -337,7 +337,7 @@ class PathPlanner():
         elif v_ego_kph > 80:
             debug = 4
             pass
-        elif abs(angle_steers) > 35:
+        elif abs(angle_steers) > 15:
             debug = 5
         # 최대 허용 조향각 제어 로직 1.
             xp = [-30,-20,-10,-5, 0, 5,10,20,30]    # 5=>약12도, 10=>28 15=>35, 30=>52
