@@ -166,5 +166,5 @@ class LanePlanner():
     self.d_poly = calc_d_poly(self.l_poly, self.r_poly, self.p_poly, self.l_prob, self.r_prob, self.lane_width, v_ego) #, self.l_std, self.r_std)
 
     def update(self, v_ego, md, sm):
-    self.parse_model(md)
-    self.update_d_poly(v_ego, sm)
+      self.parse_model(md)
+      self.update_d_poly(v_ego, sm)
