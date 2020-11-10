@@ -582,24 +582,24 @@ static void ui_draw_debug(UIState *s)
   nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));
   if (s->nDebugUi2 == 1) {
     ui_print(s, ui_viz_rx, ui_viz_ry, "Live Parameters");
-    ui_print(s, ui_viz_rx, ui_viz_ry+50, "·SR:%.2f", scene.liveParams.steerRatio);
-    ui_print(s, ui_viz_rx, ui_viz_ry+100, "·AOfs:%.2f", scene.liveParams.angleOffset);
-    ui_print(s, ui_viz_rx, ui_viz_ry+150, "·AOAVG:%.2f", scene.liveParams.angleOffsetAverage);
-    ui_print(s, ui_viz_rx, ui_viz_ry+200, "·SFact:%.2f", scene.liveParams.stiffnessFactor);
+    ui_print(s, ui_viz_rx, ui_viz_ry+50, ">SR:%.2f", scene.liveParams.steerRatio);
+    ui_print(s, ui_viz_rx, ui_viz_ry+100, ">AOfs:%.2f", scene.liveParams.angleOffset);
+    ui_print(s, ui_viz_rx, ui_viz_ry+150, ">AOAVG:%.2f", scene.liveParams.angleOffsetAverage);
+    ui_print(s, ui_viz_rx, ui_viz_ry+200, ">SFact:%.2f", scene.liveParams.stiffnessFactor);
 
     ui_print(s, ui_viz_rx, ui_viz_ry+300, "ADelay:%.2f", scene.pathPlan.steerActuatorDelay);
     ui_print(s, ui_viz_rx, ui_viz_ry+350, "SRCost:%.2f", scene.pathPlan.steerRateCost);
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "OutScale:%.3f", scene.output_scale);
     ui_print(s, ui_viz_rx, ui_viz_ry+450, "Awareness:%.2f", scene.awareness_status);
     if (s->lateral_control == 0) {
-      ui_print(s, ui_viz_rx, ui_viz_ry+500, "LaC:PID");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+600, "                                          LaC:PID");
     } else if (s->lateral_control == 1) {
-      ui_print(s, ui_viz_rx, ui_viz_ry+500, "LaC:INDI");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+600, "                                          LaC:INDI");
     } else if (s->lateral_control == 2) {
-      ui_print(s, ui_viz_rx, ui_viz_ry+500, "LaC:LQR");
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+600, "                                          LaC:LQR");
     }
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "커브");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "Curv");
     if (scene.curvature >= 0.0001) {
       ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "↖%.4f", abs(scene.curvature));
     } else if (scene.curvature <= -0.0001) {
@@ -607,10 +607,10 @@ static void ui_draw_debug(UIState *s)
     } else {
       ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f", abs(scene.curvature));      
     }
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←좌측간격(%%)→    차선폭(m)    ←우측간격(%%)→");
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                    %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
-    // ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "← 좌측여백(cm) →    차선폭(m)    ← 우측여백(cm) →");
-    // ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f                      %4.2f                      %5.1f", (scene.pathPlan.lPoly - 0.94)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94)*100);
+    // ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←좌측간격(%%)→    차선폭(m)    ←우측간격(%%)→");
+    // ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                     %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←L-Gap(cm)→      Width(m)      ←R-Gap(cm)→");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f                       %4.2f                      %5.1f", (scene.pathPlan.lPoly - 0.94)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94)*100);
   }
 }
 
@@ -1173,7 +1173,7 @@ static void bb_ui_draw_UI(UIState *s)
 
 static void ui_draw_vision_car(UIState *s) {
   const UIScene *scene = &s->scene;
-  const int car_size = 350;
+  const int car_size = 300;
   const int car_x_left = (scene->viz_rect.centerX() - 400);
   const int car_x_right = (scene->viz_rect.centerX() + 400);
   const int car_y = 500;
