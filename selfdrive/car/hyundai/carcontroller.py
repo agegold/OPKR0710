@@ -130,7 +130,7 @@ class CarController():
     self.longcontrol = CP.openpilotLongitudinalControl
     self.scc_live = not CP.radarOffCan
 
-    self.angle_differ_range = [0, 50]
+    self.angle_differ_range = [0, 30]
     self.steerMax_range = [255, SteerLimitParams.STEER_MAX]
     self.steerDeltaUp_range = [SteerLimitParams.STEER_DELTA_UP, 5]
     self.steerDeltaDown_range = [SteerLimitParams.STEER_DELTA_DOWN, 10]
@@ -185,7 +185,7 @@ class CarController():
     self.angle_steers = CS.out.steeringAngle
     self.angle_diff = abs(self.angle_steers_des) - abs(self.angle_steers)
 
-    if abs(self.outScale) >= 0.9 and CS.out.vEgo > 8: #out scale이 1이상이고 현재조향각과 필요조향각차이가 벌어지는 시점(0도이상, 최대50도)부터 보간법 사용, SR도 동일
+    if abs(self.outScale) >= 0.95 and CS.out.vEgo > 8: #out scale이 1이상이고 현재조향각과 필요조향각차이가 벌어지는 시점(0도이상, 최대30도)부터 보간법 사용, SR도 동일
       # self.steerMax = interp(abs(self.angle_steers), self.angle_differ_range, self.steerMax_range)
       # self.steerDeltaUp = interp(abs(self.angle_steers), self.angle_differ_range, self.steerDeltaUp_range)
       # self.steerDeltaDown = interp(abs(self.angle_steers), self.angle_differ_range, self.steerDeltaDown_range)
