@@ -609,8 +609,8 @@ static void ui_draw_debug(UIState *s)
     }
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " 좌측간격(%%)        차선폭(m)        우측간격(%%)");
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                    %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " 좌측간격(m)    차선폭(m)    우측간격(m)");
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%.2f                    %.2f                    %.2f", (scene.pathPlan.lPoly - 0.94), scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94));
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "← 좌측여백(cm) →    차선폭(m)    ← 우측여백(cm) →");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f                %4.2f                %5.1f", (scene.pathPlan.lPoly - 0.94)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94)*100);
   }
 }
 
