@@ -612,7 +612,6 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " 좌측간격(m)    차선폭(m)    우측간격(m)");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%.2f                    %.2f                    %.2f", (scene.pathPlan.lPoly - 0.94), scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94));
   }
-  }
 }
 
 /*

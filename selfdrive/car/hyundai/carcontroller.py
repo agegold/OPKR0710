@@ -185,7 +185,7 @@ class CarController():
     self.angle_steers = CS.out.steeringAngle
     self.angle_diff = abs(self.angle_steers_des) - abs(self.angle_steers)
 
-    if abs(self.outScale) >= 0.95 and CS.out.vEgo > 8: #out scale이 1이상이고 현재조향각과 필요조향각차이가 벌어지는 시점(0도이상, 최대20도)부터 보간법 사용, SR은30도
+    if abs(self.outScale) >= 0.8 and CS.out.vEgo > 8: #out scale이 1이상이고 현재조향각과 필요조향각차이가 벌어지는 시점(0도이상, 최대20도)부터 보간법 사용, SR은30도
       # self.steerMax = interp(abs(self.angle_steers), self.angle_differ_range, self.steerMax_range)
       # self.steerDeltaUp = interp(abs(self.angle_steers), self.angle_differ_range, self.steerDeltaUp_range)
       # self.steerDeltaDown = interp(abs(self.angle_steers), self.angle_differ_range, self.steerDeltaDown_range)

@@ -170,7 +170,7 @@ class PathPlanner():
         self.angle_steers_des_prev = self.angle_steers_des_mpc
 
         self.angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
-        if abs(output_scale) >= 1 and v_ego > 8:
+        if abs(output_scale) >= 0.8 and v_ego > 8:
             self.new_steerRatio = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
             self.new_steer_rate_cost = interp(self.angle_diff, self.angle_differ_range, self.steer_rate_cost_range)
         #if abs(output_scale) >= 1 and v_ego > 8 and ((abs(anglesteer_desire) - abs(anglesteer_current)) > 20):
