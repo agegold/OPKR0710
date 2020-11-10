@@ -87,20 +87,20 @@ class PathPlanner():
 
         self.mpc_frame = 0
 
-    self.lane_change_adjust = [0.12, 0.19, 0.9, 1.4]
-    self.lane_change_adjust_vel = [8.3, 16, 22, 30]
+        self.lane_change_adjust = [0.12, 0.19, 0.9, 1.4]
+        self.lane_change_adjust_vel = [8.3, 16, 22, 30]
         self.lane_change_adjust_new = 0.0
 
         self.angle_differ_range = [0, 30]
         self.steerRatio_range = [CP.steerRatio, 18]        
         self.new_steerRatio = CP.steerRatio
 
-    self.new_steer_rate_cost = CP.steerRateCost
-    self.steer_rate_cost_range = [CP.steerRateCost, 0.1]        
+        self.new_steer_rate_cost = CP.steerRateCost
+        self.steer_rate_cost_range = [CP.steerRateCost, 0.1]        
 
-    self.steer_actuator_delay_range = [0, 0.1, CP.steerActuatorDelay]
-    self.steer_actuator_delay_vel = [0, 3, 16]
-    self.new_steer_actuator_delay = CP.steerActuatorDelay
+        self.steer_actuator_delay_range = [0, 0.1, CP.steerActuatorDelay]
+        self.steer_actuator_delay_vel = [0, 3, 16]
+        self.new_steer_actuator_delay = CP.steerActuatorDelay
 
         self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
 
