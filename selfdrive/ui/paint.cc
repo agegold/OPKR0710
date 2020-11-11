@@ -591,11 +591,11 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+350, "*OutScale:%.3f", scene.output_scale);
     // ui_print(s, ui_viz_rx, ui_viz_ry+400, ">Awareness:%.2f", scene.awareness_status);
     if (s->lateral_control == 0) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+400, "LaC:PID");
+      ui_print(s, ui_viz_rx, ui_viz_ry+400, "*LaC:PID");
     } else if (s->lateral_control == 1) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+400, "LaC:INDI");
+      ui_print(s, ui_viz_rx, ui_viz_ry+400, "*LaC:INDI");
     } else if (s->lateral_control == 2) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+400, "LaC:LQR");
+      ui_print(s, ui_viz_rx, ui_viz_ry+400, "*LaC:LQR");
     }
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "Curv");
@@ -609,7 +609,7 @@ static void ui_draw_debug(UIState *s)
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←좌측간격(%%)→    차선폭(m)    ←우측간격(%%)→");
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                     %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
     ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←L-Gap(cm)→      Width(m)      ←R-Gap(cm)→");
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f                       %4.2f                      %5.1f", (scene.pathPlan.lPoly - 0.94)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.94)*100);
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f                       %4.2f                      %5.1f", (scene.pathPlan.lPoly - 0.60)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.60)*100);
   }
 }
 

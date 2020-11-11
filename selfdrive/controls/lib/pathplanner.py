@@ -19,7 +19,7 @@ LOG_MPC = os.environ.get('LOG_MPC', True)
 
 LANE_CHANGE_SPEED_MIN = int(Params().get('OpkrLaneChangeSpeed')) * CV.KPH_TO_MS
 LANE_CHANGE_TIME_MAX = 10.
-DST_ANGLE_LIMIT = 15.
+DST_ANGLE_LIMIT = 7.
 
 DESIRES = {
     LaneChangeDirection.none: {
@@ -92,13 +92,13 @@ class PathPlanner():
         self.lane_change_adjust_new = 0.0
 
         self.angle_differ_range = [0, 50]
-        self.steerRatio_range = [CP.steerRatio, 17]        
+        self.steerRatio_range = [CP.steerRatio, 16.5]        
         self.new_steerRatio = CP.steerRatio
 
         self.new_steer_rate_cost = CP.steerRateCost
-        self.steer_rate_cost_range = [CP.steerRateCost, 0.2]        
+        self.steer_rate_cost_range = [CP.steerRateCost, CP.steerRateCost] #0.2]        
 
-        self.steer_actuator_delay_range = [0, 0.1, CP.steerActuatorDelay]
+        self.steer_actuator_delay_range = [0, 0.15, CP.steerActuatorDelay]
         self.steer_actuator_delay_vel = [0, 3, 16]
         self.new_steer_actuator_delay = CP.steerActuatorDelay
 
@@ -175,14 +175,6 @@ class PathPlanner():
             self.new_steer_rate_cost = interp(abs(anglesteer_current), self.angle_differ_range, self.steer_rate_cost_range)
             # self.new_steerRatio = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
             # self.new_steer_rate_cost = interp(self.angle_diff, self.angle_differ_range, self.steer_rate_cost_range)
-
-        #if abs(output_scale) >= 1 and v_ego > 8 and ((abs(anglesteer_desire) - abs(anglesteer_current)) > 20):
-        #  self.mpc_frame += 1
-        #  if self.mpc_frame % 5 == 0:
-        #    self.new_steerRatio += (round(v_ego, 1) * 0.025)
-        #    if self.new_steerRatio >= 17.0:
-        #      self.new_steerRatio = 17.0
-        #    self.mpc_frame = 0
         else:
             self.mpc_frame += 1
             if self.mpc_frame % 5 == 0:
