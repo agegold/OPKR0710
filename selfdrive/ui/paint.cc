@@ -600,16 +600,16 @@ static void ui_draw_debug(UIState *s)
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "Curv");
     if (scene.curvature >= 0.0001) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "↖%.4f", abs(scene.curvature));
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "↖%.2f", abs(scene.curvature)*100);
     } else if (scene.curvature <= -0.0001) {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f↗", abs(scene.curvature));
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.2f↗", abs(scene.curvature)*100);
     } else {
-      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f", abs(scene.curvature));      
+      ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.2f", abs(scene.curvature)*100);      
     }
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←좌측간격(%%)→    차선폭(m)    ←우측간격(%%)→");
     // ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                     %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "←LeftGap→            Width(m)            ←RightGap→");
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%5.1f(cm)                     %4.2f(cm)                    %5.1f(cm)", 
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " ←LeftGap→             Width             ←RightGap→");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+800, " %5.1f(cm)                   %4.1f(m)                  %5.1f(cm)", 
                                   (scene.pathPlan.lPoly - 0.75)*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)- 0.75)*100);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+850, "%4.1f(%%)                                               %4.1f(%%)", 
                                   (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100); 
