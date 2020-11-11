@@ -31,11 +31,11 @@ class CarInterface(CarInterfaceBase):
 
     ret.carName = "hyundai"
     ret.safetyModel = car.CarParams.SafetyModel.hyundaiLegacy
-    if candidate in [CAR.GRANDEUR_HEV, CAR.GRANDEUR_HEV, CAR.SONATA]:
+    if candidate in [CAR.GRANDEUR_HEV2020, CAR.GRANDEUR2020, CAR.SONATA]:
      ret.safetyModel = car.CarParams.SafetyModel.hyundai
 
     # Most Hyundai car ports are community features for now
-    ret.communityFeature = candidate not in [CAR.GRANDEUR_HEV, CAR.GRANDEUR_HEV, CAR.SONATA, CAR.PALISADE]
+    ret.communityFeature = candidate not in [CAR.GRANDEUR_HEV2020, CAR.GRANDEUR2020, CAR.SONATA, CAR.PALISADE]
 
     params = Params()
     PidKp = int(params.get('PidKp')) * 0.01
@@ -98,9 +98,12 @@ class CarInterface(CarInterfaceBase):
     elif candidate in [CAR.IONIQ, CAR.IONIQ_EV_LTD]:
       ret.mass = 1490. + STD_CARGO_KG   #weight per hyundai site https://www.hyundaiusa.com/ioniq-electric/specifications.aspx
       ret.wheelbase = 2.7
-    elif candidate in [CAR.GRANDEUR, CAR.GRANDEUR_HEV]:
+    elif candidate in [CAR.GRANDEUR2020, CAR.GRANDEUR_HEV2020]:
       ret.mass = 1640. + STD_CARGO_KG
       ret.wheelbase = 2.885
+    elif candidate in [CAR.GRANDEUR, CAR.GRANDEUR_HEV]:
+      ret.mass = 1640. + STD_CARGO_KG
+      ret.wheelbase = 2.855
     elif candidate == CAR.VELOSTER:
       ret.mass = 3558. * CV.LB_TO_KG
       ret.wheelbase = 2.80
