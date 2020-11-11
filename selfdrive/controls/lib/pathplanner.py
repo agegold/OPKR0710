@@ -99,7 +99,7 @@ class PathPlanner():
         self.steer_rate_cost_range = [CP.steerRateCost, CP.steerRateCost] #0.2]        
 
         self.steer_actuator_delay_range = [0.15, CP.steerActuatorDelay]
-        self.steer_actuator_delay_vel = [3, 16]
+        self.steer_actuator_delay_vel = [3, 13]
         self.new_steer_actuator_delay = CP.steerActuatorDelay
 
         self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
@@ -172,7 +172,7 @@ class PathPlanner():
         self.angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
         if abs(output_scale) >= 0.8 and v_ego > 8:
             self.new_steerRatio = interp(abs(anglesteer_current), self.angle_differ_range, self.steerRatio_range)
-            self.new_steer_rate_cost = interp(abs(anglesteer_current), self.angle_differ_range, self.steer_rate_cost_range)
+            # self.new_steer_rate_cost = interp(abs(anglesteer_current), self.angle_differ_range, self.steer_rate_cost_range)
             # self.new_steerRatio = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
             # self.new_steer_rate_cost = interp(self.angle_diff, self.angle_differ_range, self.steer_rate_cost_range)
         else:
@@ -181,9 +181,9 @@ class PathPlanner():
                 self.new_steerRatio -= 0.2
                 if self.new_steerRatio <= CP.steerRatio:
                     self.new_steerRatio = CP.steerRatio
-                self.new_steer_rate_cost += 0.02
-                if self.new_steer_rate_cost >= CP.steerRateCost:
-                    self.new_steer_rate_cost = CP.steerRateCost                    
+                # self.new_steer_rate_cost += 0.02
+                # if self.new_steer_rate_cost >= CP.steerRateCost:
+                #     self.new_steer_rate_cost = CP.steerRateCost                    
                 self.mpc_frame = 0
 
         self.new_steer_actuator_delay = interp(v_ego, self.steer_actuator_delay_vel, self.steer_actuator_delay_range)
