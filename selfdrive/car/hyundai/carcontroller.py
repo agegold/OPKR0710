@@ -132,8 +132,8 @@ class CarController():
 
     self.angle_differ_range = [0, 50]
     self.steerMax_range = [255, SteerLimitParams.STEER_MAX]
-    self.steerDeltaUp_range = [int(self.params.get('SteerDeltaUpAdj')), 4]
-    self.steerDeltaDown_range = [int(self.params.get('SteerDeltaDownAdj')), 7]
+    self.steerDeltaUp_range = [int(self.params.get('SteerDeltaUpAdj')), 7]
+    self.steerDeltaDown_range = [int(self.params.get('SteerDeltaDownAdj')), 15]
 
     self.steerMax = 255
     self.steerDeltaUp = int(self.params.get('SteerDeltaUpAdj'))
