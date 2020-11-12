@@ -24,10 +24,9 @@ def eval_poly(poly, x):
 
 
 def calc_d_poly(l_poly, r_poly, p_poly, l_prob, r_prob, lane_width, v_ego):
-#def calc_d_poly(l_poly, r_poly, p_poly, l_prob, r_prob, lane_width, v_ego, l_std=0.05, r_std=0.05):
   # This will improve behaviour when lanes suddenly widen
   # these numbers were tested on 2000segments and found to work well
-  lane_width = min(4.0, lane_width)
+  lane_width = min(3.8, lane_width)
   width_poly = l_poly - r_poly
   prob_mods = []
   for t_check in [0.0, 1.5, 3.0]:
@@ -36,13 +35,6 @@ def calc_d_poly(l_poly, r_poly, p_poly, l_prob, r_prob, lane_width, v_ego):
   mod = min(prob_mods)
   l_prob = mod * l_prob
   r_prob = mod * r_prob
-
-  # Remove reliance on uncertain lanelines
-  # these numbers were tested on 2000 segments and found to work well
-  # l_std_mod = interp(l_std, [.15, .3], [1.0, 0.0])
-  # l_prob = l_std_mod * l_prob
-  # r_std_mod = interp(r_std, [.15, .3], [1.0, 0.0])
-  # r_prob = r_std_mod * r_prob
 
   path_from_left_lane = l_poly.copy()
   path_from_left_lane[3] -= lane_width / 2.0
@@ -62,15 +54,12 @@ class LanePlanner():
     self.p_poly = [0., 0., 0., 0.]
     self.d_poly = [0., 0., 0., 0.]
 
-    self.lane_width_estimate = 3.7
+    self.lane_width_estimate = 3.5
     self.lane_width_certainty = 1.0
-    self.lane_width = 3.7
+    self.lane_width = 3.5
 
     self.l_prob = 0.
     self.r_prob = 0.
-
-    # self.l_std = 0.
-    # self.r_std = 0.
 
     self.l_lane_change_prob = 0.
     self.r_lane_change_prob = 0.
@@ -81,9 +70,7 @@ class LanePlanner():
   def parse_model(self, md):
     if len(md.leftLane.poly):
       self.l_poly = np.array(md.leftLane.poly)
-      # self.l_std = float(md.leftLane.std)      
       self.r_poly = np.array(md.rightLane.poly)
-      # self.r_std = float(md.rightLane.std)      
       self.p_poly = np.array(md.path.poly)
     else:
       self.l_poly = model_polyfit(md.leftLane.points, self._path_pinv)  # left line
@@ -159,12 +146,12 @@ class LanePlanner():
     self.lane_width_certainty += 0.05 * (self.l_prob * self.r_prob - self.lane_width_certainty)
     current_lane_width = abs(self.l_poly[3] - self.r_poly[3])
     self.lane_width_estimate += 0.005 * (current_lane_width - self.lane_width_estimate)
-    speed_lane_width = interp(v_ego, [0., 31.], [2.8, 3.5])
+    speed_lane_width = interp(v_ego, [0., 9., 31.], [2.3, 2.7, 3.6])
     self.lane_width = self.lane_width_certainty * self.lane_width_estimate + \
                       (1 - self.lane_width_certainty) * speed_lane_width
 
-    self.d_poly = calc_d_poly(self.l_poly, self.r_poly, self.p_poly, self.l_prob, self.r_prob, self.lane_width, v_ego) #, self.l_std, self.r_std)
+    self.d_poly = calc_d_poly(self.l_poly, self.r_poly, self.p_poly, self.l_prob, self.r_prob, self.lane_width, v_ego)
 
-    def update(self, v_ego, md, sm):
-      self.parse_model(md)
-      self.update_d_poly(v_ego, sm)
+  def update(self, v_ego, md, sm):
+    self.parse_model(md)
+    self.update_d_poly(v_ego, sm)
