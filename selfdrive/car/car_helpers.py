@@ -177,10 +177,10 @@ def fingerprint(logcan, sendcan, has_relay):
 def get_car(logcan, sendcan, has_relay=False):
   candidate, fingerprints, vin, car_fw, source = fingerprint(logcan, sendcan, has_relay)
 
-  # if candidate is None:
-  #   cloudlog.warning("car doesn't match any fingerprints: %r", fingerprints)
-  #   candidate = "mock"
-  candidate = "GRANDEUR IG HEV 2020"
+  if candidate is None:
+    cloudlog.warning("car doesn't match any fingerprints: %r", fingerprints)
+    candidate = "mock"
+  # candidate = "GRANDEUR IG HEV 2020"
 
   CarInterface, CarController, CarState = interfaces[candidate]
   car_params = CarInterface.get_params(candidate, fingerprints, has_relay, car_fw)
