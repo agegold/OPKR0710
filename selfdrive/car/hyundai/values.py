@@ -584,6 +584,4 @@ DBC = {
   CAR.CADENZA_HEV: dbc_dict('hyundai_kia_generic', None),
 }
 
-STEER_THRESHOLD = 200
-
-
+STEER_THRESHOLD = 150
