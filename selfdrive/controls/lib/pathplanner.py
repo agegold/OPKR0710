@@ -328,10 +328,10 @@ class PathPlanner():
         elif v_ego_kph < 15:  # 30
             debug = 3
         # 저속 와리가리 제어.
-            xp = [3, 10, 15]
-            fp2 = [3, 5, 7]
-            limit_steers = interp(v_ego_kph, xp, fp2)
-            self.angle_steers_des_mpc = self.limit_ctrl(org_angle_steers_des, limit_steers, angle_steers)
+            # xp = [3, 10, 15]
+            # fp2 = [3, 5, 7]
+            # limit_steers = interp(v_ego_kph, xp, fp2)
+            # self.angle_steers_des_mpc = self.limit_ctrl(org_angle_steers_des, limit_steers, angle_steers)
         elif v_ego_kph > 80:
             debug = 4
             pass
